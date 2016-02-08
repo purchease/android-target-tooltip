@@ -29,7 +29,6 @@ import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.TextView;
 
@@ -640,9 +639,14 @@ public final class Tooltip {
             log(TAG, INFO, "[%d] onAttachedToWindow", mToolTipId);
             super.onAttachedToWindow();
             mAttached = true;
-            WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-            android.view.Display display = wm.getDefaultDisplay();
-            display.getRectSize(mScreenRect);
+
+            final Activity act = Utils.getActivity(getContext());
+            if (act != null) {
+                ViewGroup rootView;
+                rootView = (ViewGroup) (act.getWindow().getDecorView());
+                mScreenRect.set(rootView.getLeft(), rootView.getTop(), rootView.getRight(), rootView.getBottom());
+            }
+
             initializeView();
             showInternal();
         }
