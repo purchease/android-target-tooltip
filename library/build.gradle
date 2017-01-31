@@ -39,7 +39,7 @@ android {
         textReport true
         abortOnError true
     }
-    buildToolsVersion '23.0.3'
+    buildToolsVersion '25.0.2'
 }
 
 dependencies {
